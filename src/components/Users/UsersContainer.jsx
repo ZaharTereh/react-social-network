@@ -1,41 +1,45 @@
 import React from 'react';
-import {followAC,unfollowAC,setUsersAC, selectPageAC, setUserCountAC, toogleIsFetchingAC} from '../../redux/users-reducer';
+import {
+    getUserThunkCreator,changeSelectedPageThunkCreator,
+    unfollowThunkCreator,followThunkCreator
+} from '../../redux/users-reducer';
 import { connect } from 'react-redux';
-import * as axios from 'axios';
 import Users from './Users';
-import loadingPage from '../../assets/images/loading.gif';
+import Preloader from '../Preloader/Preloader';
+
+
 
 class UsersAPIComponent extends React.Component{
 
     componentDidMount = () => {
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users`)
-            .then(response => {
-                this.props.setUsers(response.data.items);
-                this.props.setUserCount(response.data.totalCount);
-            });
+        this.props.getUserThunkCreator();
     }
 
-    changeSelectedPage = (page) => {
-        this.props.toogleIsFetching(true);
-        this.props.selectPage(page);
-        axios.get(`https://social-network.samuraijs.com/api/1.0/users?page=${page}&count=${this.props.pageSize}`)
-            .then(response => {
-                this.props.setUsers(response.data.items);
-                this.props.toogleIsFetching(false);
-            });
+    changeSelectedPage = (page,pageSize) => {
+        this.props.changeSelectedPageThunkCreator(page,pageSize);
+    }
+
+    follow = (userId) => {
+        this.props.followThunkCreator(userId);
+    }
+
+    unfollow = (userId) => {
+        this.props.unfollowThunkCreator(userId);
     }
 
     render = ()=>{
         return <>
-                {this.props.isFetching ? <img src={loadingPage}/> : null}
+                {this.props.isFetching ? <Preloader/> : null}
                 <Users 
                     userCount={this.props.userCount}
                     pageSize={this.props.pageSize}
                     selectedPage={this.props.selectedPage}
                     users={this.props.users}
-                    unfollow={this.props.unfollow}
-                    follow={this.props.follow}
+                    followingInProgress={this.props.followingInProgress}
+                    
                     changeSelectedPage={this.changeSelectedPage}
+                    follow={this.follow}
+                    unfollow={this.unfollow}
                 />
             </>
     }
@@ -47,11 +51,12 @@ let mapStateToProps = (state) => {
         pageSize : state.usersPage.pageSize,
         userCount : state.usersPage.userCount,
         selectedPage : state.usersPage.selectedPage,
-        isFetching : state.usersPage.isFetching
+        isFetching : state.usersPage.isFetching,
+        followingInProgress : state.usersPage.followingInProgress
     }
 };
 
-let mapDispatchToProps = (dispatch) => {
+/*let mapDispatchToProps = (dispatch) => {
     return {
         follow: (userId) => {
             dispatch(followAC(userId));
@@ -72,8 +77,17 @@ let mapDispatchToProps = (dispatch) => {
             dispatch(toogleIsFetchingAC(isFetching));
         }
     }
-};
+};*/
 
- const UsersContainer = connect(mapStateToProps,mapDispatchToProps)(UsersAPIComponent);
+
+ const UsersContainer = connect(mapStateToProps,
+    {   
+        getUserThunkCreator,
+        changeSelectedPageThunkCreator,
+        unfollowThunkCreator,
+        followThunkCreator
+    }
+    )
+    (UsersAPIComponent);
  
  export default UsersContainer;

@@ -3,6 +3,7 @@ import Profile from './Profile'
 import {getUserProfileThunkCreator} from '../../redux/profile-reducer';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 
 
 class ProfileAPIContainer extends React.Component{
@@ -13,6 +14,10 @@ class ProfileAPIContainer extends React.Component{
     }
 
     render(){
+        if(this.props.isAuth == false){
+            return <Redirect to={"/login"}/>
+        }
+
         return (
             <Profile {...this.props}/>
         )
@@ -20,7 +25,10 @@ class ProfileAPIContainer extends React.Component{
 }
 
 let mapStateToProps = (state) =>{
-    return {userProfile : state.profilePage.userProfile};
+    return {
+        userProfile : state.profilePage.userProfile,
+        isAuth : state.auth.isAuth
+    };
 }
 
 

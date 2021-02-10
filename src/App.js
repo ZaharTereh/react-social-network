@@ -7,6 +7,7 @@ import Navbar from './components/Navbar/Navbar';
 import ProfileContainer from './components/Profile/ProfileContainer';
 import DialogsContainer from './components/Dialogs/DialogsContainer';
 import UsersContainer from './components/Users/UsersContainer';
+import Login from './components/Login/Login';
 
 function App(props) {
   return (
@@ -18,6 +19,7 @@ function App(props) {
           <Route path='/profile/:id?' render={()=><ProfileContainer store={props.store}/>}/>
           <Route path='/dialogs' render={()=><DialogsContainer store={props.store}/>}/>
           <Route path='/users' render={()=><UsersContainer store={props.store}/>}/>
+          <Route path='/login' render={()=><Login store={props.store}/>}/>
         </div>
       </div>
     </BrowserRouter>

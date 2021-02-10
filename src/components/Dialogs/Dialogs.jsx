@@ -3,6 +3,7 @@ import s from './Dialogs.module.css';
 import Message from './Message/Message';
 import Dialog from './Dialog/Dialog';
 import { addMessageActionCreator, updateNewMessageTextActionCreator } from '../../redux/dialogs-reduce';
+import { Redirect } from 'react-router-dom';
 
 
 const Dialogs = (props) => {
@@ -22,6 +23,11 @@ const Dialogs = (props) => {
     let updateNewMessageText = (event) =>{
         let newMessageText = event.target.value;
         props.updateNewMessageText(newMessageText);
+    }
+
+
+    if(props.isAuth == false){
+        return <Redirect to={"/login"}/>
     }
 
     return (

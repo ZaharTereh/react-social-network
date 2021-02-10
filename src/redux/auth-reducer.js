@@ -33,10 +33,12 @@ export const setAuthUserData = (userId,email,login) =>{
 export const setAuthUserDataThunkCreator = () => {
     return (dispatch) => {
         authAPI.me().then(response => {
-            let id = response.data.data.id;
-            let email = response.data.data.email;
-            let login = response.data.data.login;
-            dispatch(setAuthUserData(id,email,login));
+            if(response.data.resultCode === 0){
+                let id = response.data.data.id;
+                let email = response.data.data.email;
+                let login = response.data.data.login;
+                dispatch(setAuthUserData(id,email,login));
+            }
         });
     }
 }

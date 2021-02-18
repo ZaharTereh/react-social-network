@@ -32,13 +32,27 @@ export const userAPI = {
     },
 
     getProfile(id){
-        return axiosInstanse.get(`profile/${id}`);
+        console.warn("Obsolete method. Please use profileAPI object");
+        return profileAPI.getProfile(id);
     }
 };
+
+export const profileAPI = {
+    getProfile(id){
+        return axiosInstanse.get(`profile/${id}`);
+    },
+
+    getStatus(id){
+        return axiosInstanse.get(`profile/status/${id}`);
+    },
+
+    updateStatus(status){
+        return axiosInstanse.put(`profile/status`,{status});
+    }    
+}
 
 export const authAPI = {
     me(){
         return axiosInstanse.get(`auth/me`);
     }
 }
-

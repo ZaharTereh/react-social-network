@@ -1,9 +1,12 @@
-import { userAPI } from "../api/api";
+import { authAPI, profileAPI, userAPI } from "../api/api";
 
 
 let ADD_POST = 'ADD-POST';
 let UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
 let SET_USER_PROFILE = 'SET-USER-PROFILE';
+let SET_STATUS = 'SET-STATUS';
+let UPDATE_STATUS = 'UPDATE-STATUS';
+
 
 let initialState = {
     newPostText : "Привет",
@@ -12,7 +15,8 @@ let initialState = {
         {id:2,text:"Привет", image:"https://pbs.twimg.com/profile_images/793021684064419840/RjEjM6z5_400x400.jpg",likes:4},
         {id:3,text:"Здравствуй", image:"https://strana.ua/img/article/2625/70_main.jpeg",likes:1}
     ],
-    userProfile : null
+    userProfile : null,
+    status : ""
 };
 
 const profileReducer = (state = initialState,action) => {
@@ -38,6 +42,12 @@ const profileReducer = (state = initialState,action) => {
         case SET_USER_PROFILE:{
             return {...state, userProfile : action.userProfile}
         }
+        case SET_STATUS:{
+            return {...state, status : action.status}
+        }
+        case UPDATE_STATUS:{
+            return {...state, status : action.status}
+        }
         default:{
             return state;
         }
@@ -56,15 +66,41 @@ export const setUserProfile = (userProfile) =>{
     return {type:SET_USER_PROFILE,userProfile};
 }
 
+export const setStatus = (status) =>{
+    return {type:SET_STATUS,status};
+}
+
+export const updateStatus = (status) =>{
+    return {type:UPDATE_STATUS,status};
+}
+
+
 export const getUserProfileThunkCreator = (userId) =>{
     return (dispatch) => {
-        if(!userId){
-            userId = 2;
-        }
         userAPI.getProfile(userId).then(response => {
             dispatch(setUserProfile(response.data));
         });
     }
 }
+
+
+export const getStatusProfileThunkCreator = (userId) =>{
+    return (dispatch) => {
+        profileAPI.getStatus(userId).then(response => {
+            dispatch(setStatus(response.data));
+        });
+    }
+}
+
+export const updateStatusProfileThunkCreator = (status) =>{
+    return (dispatch) => {
+        profileAPI.updateStatus(status).then(response => {
+            if(response.data.resultCode === 0){
+                dispatch(setStatus(status));
+            }
+        });
+    }
+}
+
 
 export default profileReducer;

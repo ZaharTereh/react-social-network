@@ -18,7 +18,7 @@ const Users = (props) => {
                         pages.map(page=>{
                             return <span className={props.selectedPage === page && s.selectedPage}
                                          onClick={(e)=>{props.changeSelectedPage(page,props.pageSize)}}
-                                >{page}</span>
+                                >{page} </span>
                         })
                     }
                 </div>

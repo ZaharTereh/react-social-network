@@ -1,11 +1,18 @@
-import React, { useImperativeHandle } from 'react';
-import { Field, reducer, reduxForm } from 'redux-form';
+import React from 'react';
+import {Field, reduxForm} from 'redux-form';
+import {Input} from "../commons/FormControls/FormControls";
+import {required} from "../../util/validators/validators";
 
 const Login = (props) =>{
+
+    const onSubmit = (formData) => {
+        console.log(formData);
+    }
+
     return (
         <div>
             <h1>Login</h1>
-            <LoginReduxForm/>
+            <LoginReduxForm onSubmit={onSubmit} />
         </div>
     )
 }
@@ -14,13 +21,15 @@ const LoginForm = (props) =>{
     return (
         <form onSubmit={props.handleSubmit}>
             <div>
-                <Field placeholder={"Login"} name={"login"} component={"input"}/>
+                <Field placeholder={"Login"} name={"login"} component={Input}
+                       validate={[required]}/>
             </div>
             <div>
-                <Field placeholder={"Password"} name={"password"} component={"input"}/>
+                <Field placeholder={"Password"} name={"password"} component={Input}
+                       validate={[required]}/>
             </div>
             <div>
-                <Field component={"input"}  name={"rememberMe"} type={"checkbox"}/> Remember me
+                <Field component={Input}  name={"rememberMe"} type={"checkbox"}/> Remember me
             </div>
             <div>
                 <button>Login</button>

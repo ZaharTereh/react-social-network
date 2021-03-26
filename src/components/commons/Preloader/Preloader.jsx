@@ -1,5 +1,5 @@
 import React from 'react';
-import loadingPage from '../../assets/images/loading.gif';
+import loadingPage from '../../../assets/images/loading.gif';
 
 
 const Preloader = (props) =>{

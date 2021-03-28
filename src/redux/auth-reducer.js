@@ -14,8 +14,7 @@ const authReducer = (state = initialState,action) => {
         case SET_AUTH_USER_DATA:{
             return {
                 ...state,
-                ...action.data,
-                isAuth : true
+                ...action.data
             }
         }
                 
@@ -26,8 +25,8 @@ const authReducer = (state = initialState,action) => {
     }
 }
 
-export const setAuthUserData = (userId,email,login) =>{
-    return {type:SET_AUTH_USER_DATA,data:{userId,email,login}};
+export const setAuthUserData = (userId,email,login,isAuth) =>{
+    return {type:SET_AUTH_USER_DATA,data:{userId,email,login,isAuth}};
 }
 
 export const setAuthUserDataThunkCreator = () => {
@@ -37,7 +36,27 @@ export const setAuthUserDataThunkCreator = () => {
                 let id = response.data.data.id;
                 let email = response.data.data.email;
                 let login = response.data.data.login;
-                dispatch(setAuthUserData(id,email,login));
+                dispatch(setAuthUserData(id,email,login,true));
+            }
+        });
+    }
+}
+
+export const loginThunkCreator = (email,password,rememberMe) => {
+    return (dispatch) => {
+        authAPI.login(email,password,rememberMe).then(response => {
+            if(response.data.resultCode === 0){
+                dispatch(setAuthUserDataThunkCreator());
+            }
+        });
+    }
+}
+
+export const logoutThunkCreator = () => {
+    return (dispatch) => {
+        authAPI.logout().then(response => {
+            if(response.data.resultCode === 0){
+                dispatch(setAuthUserData(null,null,null,false));
             }
         });
     }

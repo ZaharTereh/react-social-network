@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {setAuthUserDataThunkCreator} from '../../redux/auth-reducer';
+import {logoutThunkCreator, setAuthUserDataThunkCreator} from '../../redux/auth-reducer';
 import { withRouter } from 'react-router-dom';
 import Header from './Header';
 
@@ -27,6 +27,8 @@ let mapStateToProps = (state) =>{
 
 let WithRouterHeaderContainer = withRouter(HeaderAPIContainer);
 
-const HeaderContainer = connect(mapStateToProps,{setAuthUserDataThunkCreator})(WithRouterHeaderContainer);
+const HeaderContainer = connect(mapStateToProps,
+    {setAuthUserDataThunkCreator,logoutThunkCreator}
+    )(WithRouterHeaderContainer);
 
 export default HeaderContainer

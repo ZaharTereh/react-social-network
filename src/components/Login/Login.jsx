@@ -5,6 +5,7 @@ import {required} from "../../util/validators/validators";
 import {connect} from "react-redux";
 import {loginThunkCreator} from "../../redux/auth-reducer";
 import {Redirect} from "react-router-dom";
+import style from './Login.module.css';
 
 const Login = (props) =>{
 
@@ -38,6 +39,12 @@ const LoginForm = (props) =>{
             <div>
                 <Field component={Input}  name={"rememberMe"} type={"checkbox"}/> Remember me
             </div>
+            {
+                props.error &&
+                <div className={style.errorMassage}>
+                    {props.error}
+                </div>
+            }
             <div>
                 <button>Login</button>
             </div>

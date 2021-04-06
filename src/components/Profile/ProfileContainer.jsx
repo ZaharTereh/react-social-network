@@ -13,14 +13,14 @@ class ProfileAPIContainer extends React.Component{
     componentDidMount = () => {
         let userId = this.props.match.params.id;
         if(!userId){
-            userId = 14146;
+            userId = this.props.authorizedUserId;
         }
         this.props.getUserProfileThunkCreator(userId);
         this.props.getStatusProfileThunkCreator(userId);
     }
 
     render(){
-        if(this.props.isAuth == false){
+        if(this.props.isAuth === false){
             return <Redirect to={"/login"}/>
         }
 
@@ -33,7 +33,8 @@ class ProfileAPIContainer extends React.Component{
 let mapStateToProps = (state) =>{
     return {
         userProfile : state.profilePage.userProfile,
-        status : state.profilePage.status
+        status : state.profilePage.status,
+        authorizedUserId : state.auth.userId
     };
 }
 

@@ -6,10 +6,6 @@ import Header from './Header';
 
 class HeaderAPIContainer extends React.Component{
 
-    componentDidMount = () => {
-        this.props.setAuthUserDataThunkCreator();
-    }
-
     render(){
         return (
             <Header {...this.props}/>
@@ -28,7 +24,7 @@ let mapStateToProps = (state) =>{
 let WithRouterHeaderContainer = withRouter(HeaderAPIContainer);
 
 const HeaderContainer = connect(mapStateToProps,
-    {setAuthUserDataThunkCreator,logoutThunkCreator}
+    {logoutThunkCreator}
     )(WithRouterHeaderContainer);
 
 export default HeaderContainer

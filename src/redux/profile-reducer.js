@@ -5,6 +5,7 @@ let ADD_POST = 'ADD-POST';
 let SET_USER_PROFILE = 'SET-USER-PROFILE';
 let SET_STATUS = 'SET-STATUS';
 let UPDATE_STATUS = 'UPDATE-STATUS';
+let DELETE_POST = 'DELETE-POST';
 
 
 let initialState = {
@@ -39,6 +40,10 @@ const profileReducer = (state = initialState,action) => {
         case UPDATE_STATUS:{
             return {...state, status : action.status}
         }
+        case DELETE_POST:{
+            return {...state, postData: state.postData.filter(element => element.id !== action.id)
+            }
+        }
         default:{
             return state;
         }
@@ -59,6 +64,10 @@ export const setStatus = (status) =>{
 
 export const updateStatus = (status) =>{
     return {type:UPDATE_STATUS,status};
+}
+
+export const deletePost = (id) =>{
+    return {type:DELETE_POST,id};
 }
 
 

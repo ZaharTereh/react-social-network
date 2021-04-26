@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import s from './Dialogs.module.css';
 import Message from './Message/Message';
 import Dialog from './Dialog/Dialog';
@@ -18,10 +18,13 @@ const Dialogs = (props) => {
         return (<Message message={element.message}/>);
     });
 
-
-
     let addNewMessage = (values) => {
         props.onSendMessageClick(values.newMessageText)
+    }
+
+    let [range,setRange] = useState(0);
+    let changeRange = (e) => {
+        setRange(e.currentTarget.value);
     }
 
 
@@ -40,6 +43,11 @@ const Dialogs = (props) => {
                 </div>
                 <div>
                     <AddMessageFormRedux onSubmit={addNewMessage} />
+                </div>
+                <div>
+                    <input type={"range"} min={"0"} max={"100"}
+                           step={"1"} value={range} onChange={changeRange}/>
+                    {range}
                 </div>
             </div>
         </div>

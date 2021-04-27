@@ -7,13 +7,13 @@ import {loginThunkCreator} from "../../redux/auth-reducer";
 import {Redirect} from "react-router-dom";
 import style from './Login.module.css';
 
-const Login = (props) =>{
+const Login = ({isAuth,loginThunkCreator}) =>{
 
     const onSubmit = (formData) => {
-        props.loginThunkCreator(formData.email,formData.password,formData.rememberMe);
+        loginThunkCreator(formData.email,formData.password,formData.rememberMe);
     }
 
-    if(props.isAuth){
+    if(isAuth){
        return <Redirect to={"/profile"}/>
     }
 
@@ -25,9 +25,9 @@ const Login = (props) =>{
     )
 }
 
-const LoginForm = (props) =>{
+const LoginForm = ({handleSubmit,error}) =>{
     return (
-        <form onSubmit={props.handleSubmit}>
+        <form onSubmit={handleSubmit}>
             <div>
                 <Field placeholder={"Email"} name={"email"} component={Input}
                        validate={[required]}/>
@@ -40,9 +40,9 @@ const LoginForm = (props) =>{
                 <Field component={Input}  name={"rememberMe"} type={"checkbox"}/> Remember me
             </div>
             {
-                props.error &&
+                error &&
                 <div className={style.errorMassage}>
-                    {props.error}
+                    {error}
                 </div>
             }
             <div>

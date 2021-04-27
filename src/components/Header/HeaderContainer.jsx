@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import {logoutThunkCreator, setAuthUserDataThunkCreator} from '../../redux/auth-reducer';
+import {logoutThunkCreator} from '../../redux/auth-reducer';
 import { withRouter } from 'react-router-dom';
 import Header from './Header';
 

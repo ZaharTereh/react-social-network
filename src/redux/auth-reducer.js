@@ -1,7 +1,7 @@
 import { authAPI } from "../api/api";
 import {stopSubmit} from "redux-form";
 
-let SET_AUTH_USER_DATA = 'SET-AUTH-USER-DATA';
+let SET_AUTH_USER_DATA = 'auth/SET-AUTH-USER-DATA';
 
 let initialState = {
     userId : null,
@@ -31,38 +31,35 @@ export const setAuthUserData = (userId,email,login,isAuth) =>{
 }
 
 export const setAuthUserDataThunkCreator = () => {
-    return (dispatch) => {
-        return authAPI.me().then(response => {
-            if (response.data.resultCode === 0) {
-                let id = response.data.data.id;
-                let email = response.data.data.email;
-                let login = response.data.data.login;
-                dispatch(setAuthUserData(id, email, login, true));
-            }
-        });
+    return async (dispatch) => {
+        let response = await authAPI.me();
+        if (response.data.resultCode === 0) {
+            let id = response.data.data.id;
+            let email = response.data.data.email;
+            let login = response.data.data.login;
+            dispatch(setAuthUserData(id, email, login, true));
+        }
     }
 }
 
 export const loginThunkCreator = (email,password,rememberMe) => {
-    return (dispatch) => {
-        authAPI.login(email,password,rememberMe).then(response => {
-            if(response.data.resultCode === 0){
-                dispatch(setAuthUserDataThunkCreator());
-            }else {
-                let message = response.data.messages.length > 0 ? response.data.messages[0] : "Some error"
-                dispatch(stopSubmit("login",{_error : message}));
-            }
-        });
+    return async (dispatch) => {
+        let response = await authAPI.login(email,password,rememberMe);
+        if(response.data.resultCode === 0){
+            dispatch(setAuthUserDataThunkCreator());
+        }else {
+            let message = response.data.messages.length > 0 ? response.data.messages[0] : "Some error"
+            dispatch(stopSubmit("login",{_error : message}));
+        }
     }
 }
 
 export const logoutThunkCreator = () => {
-    return (dispatch) => {
-        authAPI.logout().then(response => {
-            if(response.data.resultCode === 0){
-                dispatch(setAuthUserData(null,null,null,false));
-            }
-        });
+    return async (dispatch) => {
+        let response = await authAPI.logout();
+        if(response.data.resultCode === 0){
+            dispatch(setAuthUserData(null,null,null,false));
+        }
     }
 }
 

@@ -1,11 +1,11 @@
 import { profileAPI, userAPI } from "../api/api";
 
 
-let ADD_POST = 'ADD-POST';
-let SET_USER_PROFILE = 'SET-USER-PROFILE';
-let SET_STATUS = 'SET-STATUS';
-let UPDATE_STATUS = 'UPDATE-STATUS';
-let DELETE_POST = 'DELETE-POST';
+let ADD_POST = 'profile/ADD-POST';
+let SET_USER_PROFILE = 'profile/SET-USER-PROFILE';
+let SET_STATUS = 'profile/SET-STATUS';
+let UPDATE_STATUS = 'profile/UPDATE-STATUS';
+let DELETE_POST = 'profile/DELETE-POST';
 
 
 let initialState = {
@@ -72,29 +72,25 @@ export const deletePost = (id) =>{
 
 
 export const getUserProfileThunkCreator = (userId) =>{
-    return (dispatch) => {
-        userAPI.getProfile(userId).then(response => {
-            dispatch(setUserProfile(response.data));
-        });
+    return async (dispatch) => {
+        let response = await userAPI.getProfile(userId)
+        dispatch(setUserProfile(response.data));
     }
 }
 
-
 export const getStatusProfileThunkCreator = (userId) =>{
-    return (dispatch) => {
-        profileAPI.getStatus(userId).then(response => {
-            dispatch(setStatus(response.data));
-        });
+    return async (dispatch) => {
+        let response = await profileAPI.getStatus(userId)
+        dispatch(setStatus(response.data));
     }
 }
 
 export const updateStatusProfileThunkCreator = (status) =>{
-    return (dispatch) => {
-        profileAPI.updateStatus(status).then(response => {
-            if(response.data.resultCode === 0){
-                dispatch(setStatus(status));
-            }
-        });
+    return async (dispatch) => {
+        let response = await profileAPI.updateStatus(status)
+        if(response.data.resultCode === 0){
+            dispatch(setStatus(status));
+        }
     }
 }
 
